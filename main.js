@@ -3,9 +3,9 @@ window.addEventListener('load', init)
 
 //Available Levels
 const levels = {
-  easy: 5,
+  easy: 4,
   medium: 3,
-  hard: 1
+  hard: 2
 };
 
 // To change level
@@ -35,7 +35,17 @@ const words = [
   'Seven',
   'Eight',
   'Nine',
-  'Ten'
+  'Ten',
+  'Red',
+  'Blue',
+  'Green',
+  'Yellow',
+  'White',
+  'Purple',
+  'Orange',
+  'Black',
+  'Brown',
+  'Pink'
 ];
 
 // Initialise Game
@@ -81,6 +91,8 @@ function setLevel(e) {
   isPlaying = false;
   time = 0;
   wordInput.value = "";
+  // Show number of seconds in UI
+  seconds.innerHTML = currentLevel;
 }
 
 // Start match
@@ -106,11 +118,14 @@ function matchWords() {
   if (wordInput.value === currentWord.innerHTML) {
     message.innerHTML = 'Correct!!!';
     // Makes message color green on success
+    message.classList.remove('text-warning');
     message.classList.remove('text-danger');
     message.classList.add('text-success');
     return true
   } else {
-    message.innerHTML = "";
+    message.innerHTML = "Typing...";
+    message.classList.remove('text-success');
+    message.classList.add('text-warning');
     return false;
   }
 }
@@ -137,12 +152,14 @@ function countdown() {
 
 // Check game status
 function checkStatus() {
-  if (!isPlaying && time === 0 /* && wordInput.value === "" */) {
+  if (!isPlaying && time === 0) {
     message.innerHTML = 'Game Over!!!';
     // Make message colour red on game over
     message.classList.remove('text-success');
+    message.classList.remove('text-warning');
     message.classList.add('text-danger');
-    // Set score to -1 so user doesnt get a free point when starting a new game.
-    score = -1;
+    // Set score to -1 if we dont want the user to get a free point when starting a new game.
+    // score = -1;
+    score = 0;
   }
 }
