@@ -9,7 +9,7 @@ const levels = {
 };
 
 // To change level
-const currentLevel = levels.medium;
+let currentLevel = levels.medium;
 
 let time = currentLevel;
 let score = 0;
@@ -22,6 +22,7 @@ const scoreDisplay = document.querySelector('#score');
 const timeDisplay = document.querySelector('#time');
 const message = document.querySelector('#message');
 const seconds = document.querySelector('#seconds');
+const levelSelect = document.querySelector('#levels');
 
 // Fill this array of words
 const words = [
@@ -39,8 +40,10 @@ const words = [
 
 // Initialise Game
 function init() {
+  // Manage level changes
+  levelSelect.addEventListener('click', setLevel)
   // Show number of seconds in UI
-  seconds.innerHTMl = currentLevel;
+  seconds.innerHTML = currentLevel;
   // Load word from array
   showWord(words);
   //Start matching on word input
@@ -49,6 +52,35 @@ function init() {
   setInterval(countdown, 1000);
   // Check game status
   setInterval(checkStatus, 50);
+}
+
+// Change the level based on the button they clicked
+function setLevel(e) {
+
+  var selectedLevel = e.target.value;
+  // Set currentlevel to selectedLevel
+  if (selectedLevel === "easy") {
+    currentLevel = levels.easy;
+  } else if (selectedLevel === "medium") {
+    currentLevel = levels.medium;
+  } else if (selectedLevel === "hard") {
+    currentLevel = levels.hard;
+  }
+
+  // Last selected button color change
+  var buttons = document.getElementsByTagName('button');
+  for (i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove('btn-info')
+    buttons[i].classList.add('btn-secondary')
+
+    e.target.classList.remove('btn-secondary')
+    e.target.classList.add('btn-info')
+  }
+
+  // Reset game on level change
+  isPlaying = false;
+  time = 0;
+  wordInput.value = "";
 }
 
 // Start match
@@ -69,10 +101,13 @@ function startMatch() {
   }
 }
 
-// Match currentWOrd to wordInput
+// Match currentWord to wordInput
 function matchWords() {
   if (wordInput.value === currentWord.innerHTML) {
     message.innerHTML = 'Correct!!!';
+    // Makes message color green on success
+    message.classList.remove('text-danger');
+    message.classList.add('text-success');
     return true
   } else {
     message.innerHTML = "";
@@ -102,8 +137,12 @@ function countdown() {
 
 // Check game status
 function checkStatus() {
-  if (!isPlaying && time === 0) {
+  if (!isPlaying && time === 0 /* && wordInput.value === "" */) {
     message.innerHTML = 'Game Over!!!';
+    // Make message colour red on game over
+    message.classList.remove('text-success');
+    message.classList.add('text-danger');
+    // Set score to -1 so user doesnt get a free point when starting a new game.
     score = -1;
   }
 }
