@@ -33,19 +33,13 @@ const words = [
   'Five',
   'Six',
   'Seven',
-  'Eight',
-  'Nine',
-  'Ten',
-  'Red',
-  'Blue',
-  'Green',
-  'Yellow',
-  'White',
-  'Purple',
-  'Orange',
-  'Black',
-  'Brown',
-  'Pink'
+  'Doc',
+  'Grumpy',
+  'Happy',
+  'Sleepy',
+  'Dopey',
+  'Bashful',
+  'Sneezy'
 ];
 
 // Initialise Game
